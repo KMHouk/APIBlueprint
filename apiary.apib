@@ -1,0 +1,1793 @@
+FORMAT: 1A
+HOST: https://blockchain.info
+
+# Blockchain API
+The [Blockchain](https://www.blockchain.com/) API will allow you to send & receive bitcoin, query JSON data on blocks and transactions, and get information regarding the blockchain. **Almost all functionality and data you see on this website is available through API calls.**
+
+Blockchain.info provides official API libraries for [Python](https://github.com/blockchain/api-v1-client-python), [Java](https://github.com/blockchain/api-v1-client-java), [.NET (C#)](https://github.com/blockchain/api-v1-client-csharp), [Ruby](https://github.com/blockchain/api-v1-client-ruby), [Node](https://github.com/blockchain/api-v1-client-node), and [PHP](https://github.com/blockchain/api-v1-client-php).
+
+
+The request limits are as follows:
+```
+Requests in 8 Hours: Soft Limit = 28800, Hard Limit = 28900 
+Requests in 5 minutes: Soft Limit = 700, Hard Limit = 725 
+```
+
+To bypass these limits, you can apply for a free API key [here](https://blockchain.info/api/api_create_code).
+
+**PLEASE NOTE, this documentation is in BETA, please send bugs/suggestions to support@blockchain.info**
+
+# Group Simple Address Lookups
+Simple plain text API for querying blockchain data, usually one number. For more complex needs, please see our Detailed Bitcoin Data section.
+
+All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/) i.e. divide by 100,000,000 to get the amount in BTC.
+
+## Address Balance [/q/addressbalance/{address}/confirmations={confirmations}]
+
+### GET
+
+Get the current balance of an address (in [satoshi](http://www.btcsatoshi.com/)). Multiple addresses separated by a pipe: | 
+
+Do not use to process payments without the confirmations parameter.
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Bitcoin address to query for current bitcoin balance.
+    + confirmations (optional, Integer, `3`) ... Number of confirmations required for a transaction to be included in response. 
+
++ Response 200 (text/plain)
+
+        2000000
+
+## Total Received [/q/getreceivedbyaddress/{address}/confirmations={confirmations}]
+
+### GET
+
+Get the total number of bitcoins received by an address (in [satoshi](http://www.btcsatoshi.com/)), **this may be a different value than 'balance'**. Multiple addresses separated by a pipe: |
+
+Do not use to process payments without the confirmations parameter.
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Bitcoin address to query for total bitcoin received over time.
+    + confirmations (optional, Integer, `3`) ... Number of confirmations required for a transaction to be included in response. 
+
++ Response 200 (text/plain)
+
+        2000000
+
+## Total Sent [/q/getsentbyaddress/{address}/confirmations={confirmations}]
+
+### GET
+
+Get the total number of bitcoins sent by an address (in [satoshi](http://www.btcsatoshi.com/)). Multiple addresses separated by a pipe: | 
+
+Do not use to process payments without the confirmations parameter.
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Bitcoin address to query for total bitcoin sent over time.
+    + confirmations (optional, Integer, `3`) ... Number of confirmations required for a transaction to be included in response. 
+
++ Response 200 (text/plain)
+
+        2000000
+        
+## First Seen [/q/addressfirstseen/{address}]
+
+### GET
+[Epoch Timestamp](http://www.epochconverter.com/) of the block an address was first confirmed in.
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Bitcoin address to query for first appearance on the network.
+
++ Response 200 (text/plain)
+
+        1331482301
+
+# Group Simple Real-Time Data
+Simple plain text API for querying blockchain data, usually one number. For more complex needs, please see Bitcoin Data API.
+
+All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/) i.e. divide by 100,000,000 to get the amount in BTC.
+
+## Mining Difficulty [/q/getdifficulty]
+
+Current difficulty target as a decimal number
+
+### GET
+
++ Response 200 (text/plain)
+
+        4.668437631686029E10
+        
+## Block Count [/q/getblockcount]
+Current block height in the longest chain
+
+### GET
+
++ Response 200 (text/plain)
+
+        346322
+        
+## Latest Hash [/q/latesthash]
+Hash of the latest block
+
+### GET
+
++ Response 200 (text/plain)
+
+        00000000000000001262d790240fff0363ba592ba0361c03b5f533eedaaafb47
+        
+## Bitcoin Per Block [/q/bcperblock]
+Current block reward in BTC
+
+### GET
+
++ Response 200 (text/plain)
+
+        2500000000
+
+## Total Bitcoin [/q/totalbc]
+Total Bitcoins in circulation (delayed by up to 1 hour)
+
+### GET
+
++ Response 200 (text/plain)
+
+        1390737500000000
+        
+## Mining Probability [/q/probability]
+Probability of finding a valid block each hash attempt
+
+### GET
+
++ Response 200 (text/plain)
+
+        0.000000000000000000004987335421888922
+        
+## Hashes to Win [/q/hashestowin]
+Average number of hash attempts needed to solve a block
+
+### GET
+
++ Response 200 (text/plain)
+
+        9223372036854775807
+        
+## Next Re-Target [/q/nextretarget]
+Block height of the next difficulty retarget
+
+### GET
+
++ Response 200 (text/plain)
+
+        346751
+        
+## Avg TX Size [/q/avgtxsize/{blocks}]
+Average transaction size in Bytes. Default is the past 1000 blocks.
+
+### GET
+
++ Parameters
+    + blocks (optional, Integer, `2000`) ... Change the number of blocks by passing an integer as the second argument
+
++ Response 200 (text/plain)
+
+        530
+
+## Avg TX Value [/q/avgtxvalue/{transactions}]
+Average transaction value. Default is the past 1000 transactions.
+
+### GET
+
++ Parameters
+    + transactions (optional, Integer, `2000`) ... Change the number of transactions by passing an integer as the second argument
+
++ Response 200 (text/plain)
+
+        1833255825
+
+## Interval [/q/interval]
+Average time between blocks in seconds.
+
+### GET
+
++ Response 200 (text/plain)
+
+        691.1999999999999
+        
+## ETA [/q/eta]
+Estimated time until the next block in seconds.
+
+### GET
+
++ Response 200 (text/plain)
+
+        569.1999999999999
+        
+## Avg TX Number [/q/avgtxnumber/{blocks}]
+Average number of transactions per block. Default is past 100 blocks. 
+
+### GET
+
++ Parameters
+    + blocks (optional, Integer, `200`) ... Change the number of blocks by passing an integer as the second argument
+
++ Response 200 (text/plain)
+
+        787
+
+## Unconfirmed TXs [/q/unconfirmedcount]
+Number of pending unconfirmed transactions 
+
+### GET
+
++ Response 200 (text/plain)
+
+        3285
+        
+## Market Cap [/q/marketcap]
+USD market cap (based on 24 hour weighted price). Denoted in scientific notation.
+
+### GET
+
++ Response 200 (text/plain)
+
+        3.79765261175E9
+        
+## 24hr Price [/q/24hrprice]
+24 hour weighted price from the largest exchanges
+
+### GET
+
++ Response 200 (text/plain)
+
+        273.03
+
+## 24hr Transactions [/q/24hrtransactioncount]
+Number of transactions in the past 24 hours.
+
+### GET
+
++ Response 200 (text/plain)
+
+        92895
+
+## 24hr Volume [/q/24hrbtcsent]
+Number of btc sent in the last 24 hours (in [satoshi](http://www.btcsatoshi.com/)).
+
+### GET
+
++ Response 200 (text/plain)
+
+        86026660874246
+
+## Hash Rate [/q/hashrate]
+Estimated network hash rate in Gigahashes per second. Denoted in scientific notation.
+
+### GET
+
++ Response 200 (text/plain)
+
+        3.527453259987376E8
+
+## Rejected [/q/rejected/{tx_or_Block}]
+Lookup the reason why the provided tx or block hash was rejected (if any). [Please see our page here for an example](https://blockchain.info/rejected).
+
+### GET
+
++ Parameters
+    + tx_or_Block (required, String, `d0f6f3c272b25a09e71a0aae245131c72c33af00ddcf7bfe5380ca1949781bd1`) ... Transaction hash or block hash
+    
++ Response 200 (text/plain)
+
+        The Maximum number of outputs in a single transaction is 200
+
+# Group Simple Transaction Lookups
+Simple plain text API for querying blockchain data, usually one number. For more complex needs, please see Bitcoin Data API.
+
+Please limit your queries to a maximum of 1 every 10 seconds. All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/) i.e. divide by 100000000 to get the amount in BTC.
+
+## Total Output [/txtotalbtcoutput/{tx_hash}]
+
+### GET
+Get total output value of a transaction (in [satoshi](http://www.btcsatoshi.com/)).
+
++ Parameters
+    + tx_hash (required, String, `1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5`) ... Transaction hash/id
+
++ Response 200 (text/plain)
+
+        2514787
+        
+## Total Input [/txtotalbtcinput/{tx_hash}]
+
+### GET
+Get total input value of a transaction, including miner's tip (in [satoshi](http://www.btcsatoshi.com/)).
+
++ Parameters
+    + tx_hash (required, String, `1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5`) ... Transaction hash/id
+
++ Response 200 (text/plain)
+
+        2534787
+        
+## Transaction Fee [/txfee/{tx_hash}]
+
+### GET
+Get fee included in a transaction (in [satoshi](http://www.btcsatoshi.com/)).
+
++ Parameters
+    + tx_hash (required, String, `1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5`) ... Transaction hash/id
+
++ Response 200 (text/plain)
+
+        20000
+
+## Transaction Result [/q/txresult/{tx_hash}/{address_1}|{address_2}]
+
+### GET
+Calculate the result of a transaction for a specific address. Querying receiving addresses will respond positive satoshi values, while querying sending addresses will respond with negative satoshi values. 
+
+Multiple addresses separated by a pipe: | 
+
+Please note, if you query multiple addresses, the values will be added together in response.
+
++ Parameters
+    + tx_hash (required, String, `1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5`) ... Transaction hash/id
+    + address_1 (required, String, `1834XF5xscYZGPFhFLXmpq95x7yca69GcY`) ... Bitcoin address to query.
+    + address_2 (optional, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Optional additional bitcoin address(es) to query (continue to add more addresses if desired)
+
++ Response 200 (text/plain)
+
+        2514787
+
+# Group Exchange Rates
+Get market prices for a variety of currency types.
+
+## Ticker [/ticker]
+
+### GET
+Returns a JSON object with the currency codes as keys. "15m" is the 15 minutes delayed market price, "last" is the most recent market price, "symbol" is the currency symbol. 
+
++ Response 200 (application/json)
+
+
+        {
+          "USD" : {"15m" : 265.69, "last" : 265.69, "buy" : 265.69, "sell" : 265.84,  "symbol" : "$"},
+          "ISK" : {"15m" : 35774.89, "last" : 35774.89, "buy" : 35774.89, "sell" : 35795.09,  "symbol" : "kr"},
+          "HKD" : {"15m" : 2060.57, "last" : 2060.57, "buy" : 2060.57, "sell" : 2061.74,  "symbol" : "$"},
+          "TWD" : {"15m" : 8369.89, "last" : 8369.89, "buy" : 8369.89, "sell" : 8374.62,  "symbol" : "NT$"},
+          "CHF" : {"15m" : 257, "last" : 257, "buy" : 257, "sell" : 257.14,  "symbol" : "CHF"},
+          "EUR" : {"15m" : 240.51, "last" : 240.51, "buy" : 240.51, "sell" : 240.65,  "symbol" : "€"},
+          "DKK" : {"15m" : 1789.9, "last" : 1789.9, "buy" : 1789.9, "sell" : 1790.91,  "symbol" : "kr"},
+          "CLP" : {"15m" : 164459.53, "last" : 164459.53, "buy" : 164459.53, "sell" : 164552.38,  "symbol" : "$"},
+          "CAD" : {"15m" : 330.22, "last" : 330.22, "buy" : 330.22, "sell" : 330.4,  "symbol" : "$"},
+          "CNY" : {"15m" : 1659.13, "last" : 1659.13, "buy" : 1659.13, "sell" : 1660.07,  "symbol" : "¥"},
+          "THB" : {"15m" : 8612.84, "last" : 8612.84, "buy" : 8612.84, "sell" : 8617.7,  "symbol" : "฿"},
+          "AUD" : {"15m" : 340.21, "last" : 340.21, "buy" : 340.21, "sell" : 340.4,  "symbol" : "$"},
+          "SGD" : {"15m" : 363.44, "last" : 363.44, "buy" : 363.44, "sell" : 363.64,  "symbol" : "$"},
+          "KRW" : {"15m" : 292355.09, "last" : 292355.09, "buy" : 292355.09, "sell" : 292520.15,  "symbol" : "₩"},
+          "JPY" : {"15m" : 31895.55, "last" : 31895.55, "buy" : 31895.55, "sell" : 31913.56,  "symbol" : "¥"},
+          "PLN" : {"15m" : 995.34, "last" : 995.34, "buy" : 995.34, "sell" : 995.9,  "symbol" : "zł"},
+          "GBP" : {"15m" : 174.22, "last" : 174.22, "buy" : 174.22, "sell" : 174.32,  "symbol" : "£"},
+          "SEK" : {"15m" : 2214.53, "last" : 2214.53, "buy" : 2214.53, "sell" : 2215.78,  "symbol" : "kr"},
+          "NZD" : {"15m" : 353.4, "last" : 353.4, "buy" : 353.4, "sell" : 353.6,  "symbol" : "$"},
+          "BRL" : {"15m" : 789.7, "last" : 789.7, "buy" : 789.7, "sell" : 790.14,  "symbol" : "R$"},
+          "RUB" : {"15m" : 16406.24, "last" : 16406.24, "buy" : 16406.24, "sell" : 16415.5,  "symbol" : "RUB"}
+          
+        }
+
+## Converter [/tobtc?currency={currency}&value={value}]
+
+### GET
+Convert specified currency value to BTC amount. 
+
++ Parameters
+    + currency (required, String, `USD`) ... Three letter symbol for currency (see Ticker GET call symbols) 
+    + value (required, Integer, `500`) ... Value to convert
+
++ Response 200 (text/plain)
+
+        1.88224665
+
+# Group Blockchain Wallet    
+The My Wallet API provides a simple interface Blockchain users can utilize in order to interact with their wallet.
+
+**In order to use this API, access must be explicitly enabled, and all client ip addresses whitelisted by the wallet owner. Manage access in [Account Settings] -> [IP Restrictions]. Wallets created via the Create Wallet API can bypass this by including the same API key used to create the wallet, in all requests.**
+
+All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/), i.e. multiply by 100,000,000 to get the satoshi amount in BTC, or divide the BTC amount by 100,000,000 to get the equivalent in satoshi.
+
+Want to send without a My Wallet account? It is possible to send using only a private key by replacing **guid** with a private key in wallet import format. The password parameters can then be omitted.
+
+## Make an Outgoing Payment [/merchant/{guid}/payment{?password,second_password,address,amount,from,fee,note}]
+Send bitcoin from your wallet to another bitcoin address. All transactions include a 0.0001 BTC miners fee by default.
+
+### GET
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + second_password (optional, String, `ThisIsMyOptionalSecondPassword123!`) ... Secondary password if double-encryption is enabled, must be URL encoded
+    + address (required, String, `1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq`) ... Bitcoin Address to send funds to
+    + amount (required, Integer, `100000000`) ... Amount denominated in [Satoshi](http://www.btcsatoshi.com/), the ex. is for 1 BTC
+    + from (optional, String, `1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh`) ... Specify a bitcoin address to send from
+    + fee (optional, Integer, `10000`) ... Specify a fee for the transaction (default .0001 BTC)
+    + note (optional, String, `This%20is%20my%20note!`) ... Attach a public note when outputs are greater than .005 BTC
+
++ Response 200 (application/json)
+
+        {
+            "message": "Response Message",
+            "tx_hash": "Transaction Hash",
+            "notice": "Additional Message"
+        }
+
+### POST 
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        second_password=ThisIsMyOptionalSecondPassword123!&
+        address=1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq&
+        amount=100000000&
+        from=1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh&
+        fee=10000&
+        note=This%20is%20my%20note!
+
++ Response 200 (application/json)
+
+        {
+            "message": "Response Message",
+            "tx_hash": "Transaction Hash",
+            "notice": "Additional Message"
+        }
+
+
+
+
+## Send Many Transactions [/merchant/{guid}/sendmany{?password,second_password,addresses,amount,fee,note}]
+Send bitcoin to multiple recipients in the same transaction. 
+
+
+### GET
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + second_password (optional, String, `ThisIsMyOptionalSecondPassword123!`) ... Secondary password if double-encryption is enabled, must be URL encoded
+    + addresses (required, JSON Object, `{"1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh": 100000000, "12Cf6nCcRtKERh9cQm3Z29c9MWvQuFSxvT": 1500000000, "1dice6YgEVBf88erBFra9BHf6ZMoyvG88": 200000000}`) ... a JSON Object using Bitcoin Addresses as keys and the amounts to send as values. The below example would send 1 BTC to 1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh, 15 BTC to 12Cf6nCcRtKERh9cQm3Z29c9MWvQuFSxvT and 2 BTC to 1dice6YgEVBf88erBFra9BHf6ZMoyvG88 in the same transaction. Rember to URL encode JSON object if using GET method.
+    + amount (required, Integer, `100000000`) ... Amount denominated in [Satoshi](http://www.btcsatoshi.com/), the ex. is for 1 BTC
+    + fee (optional, Integer, `10000`) ... Specify a fee for the transaction (default .0001 BTC)
+    + note (optional, String, `This%20is%20my%20note!`) ... Attach a public note when outputs are greater than .005 BTC
+
++ Response 200 (application/json)
+
+        {
+            "message": "Response Message",
+            "tx_hash": "Transaction Hash"
+        }
+
+### POST
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        second_password=ThisIsMyOptionalSecondPassword123!&
+        address={"1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh": 100000000, 
+                "12Cf6nCcRtKERh9cQm3Z29c9MWvQuFSxvT": 1500000000, 
+                "1dice6YgEVBf88erBFra9BHf6ZMoyvG88": 200000000}&
+        amount=100000000&
+        from=1JzSZFs2DQke2B3S4pBxaNaMzzVZaG4Cqh&
+        fee=10000&
+        note=This%20is%20my%20note!
+
++ Response 200 (application/json)
+
+        {
+            "message": "Response Message",
+            "tx_hash": "Transaction Hash"
+        }
+
+
+## Fetching My Wallet Balance [/merchant/{guid}/balance{?password}]
+Fetch the balance of a wallet. This should be used as an estimate only and will include unconfirmed transactions and possibly double spends. Balance denominated in [Satoshi.](http://www.btcsatoshi.com/)
+
+
+### GET
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+
++ Response 200 (application/json)
+
+        { "balance": 1000 }
+
+### POST
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!
+
++ Response 200 (application/json)
+
+        { "balance": 1000 }
+
+## Listing Wallet Addresses [/merchant/{guid}/list{?password,confirmations}]
+List all active addresses in a wallet. By default includes a 0 confirmation balance, which should be used as an estimate only and will include unconfirmed transactions and possibly double spends. 
+
+### GET
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + confirmations (optional, Integer, `2`) ... The minimum number of confirmations transactions must have before being included in balance of addresses
+
++ Response 200 (application/json)
+
+        {
+            "addresses": [
+                {
+                    "balance": 1400938800,
+                    "address": "1Q1AtvCyKhtveGm3187mgNRh5YcukUWjQC",
+                    "label": "SMS Deposits",
+                    "total_received": 5954572400
+                },
+                {
+                    "balance": 79434360,
+                    "address": "1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq",
+                    "label": "My Wallet",
+                    "total_received": 453300048335
+                },
+                {
+                    "balance": 0,
+                    "address": "17p49XUC2fw4Fn53WjZqYAm4APKqhNPEkY",
+                    "total_received": 0
+                }
+            ]
+        }
+        
+### POST
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        confirmations=2
+
++ Response 200 (application/json)
+
+        {
+            "addresses": [
+                {
+                    "balance": 1400938800,
+                    "address": "1Q1AtvCyKhtveGm3187mgNRh5YcukUWjQC",
+                    "label": "SMS Deposits",
+                    "total_received": 5954572400
+                },
+                {
+                    "balance": 79434360,
+                    "address": "1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq",
+                    "label": "My Wallet",
+                    "total_received": 453300048335
+                },
+                {
+                    "balance": 0,
+                    "address": "17p49XUC2fw4Fn53WjZqYAm4APKqhNPEkY",
+                    "total_received": 0
+                }
+            ]
+        }
+
+
+
+## Generating a New Address [/merchant/{guid}/new_address{?password,second_password,label}]
+Generate a new address in My Wallet for sending and/or receiving bitcoin.
+
+### GET
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + second_password (optional, String, `ThisIsMyOptionalSecondPassword123!`) ... Secondary password if double-encryption is enabled, must be URL encoded
+    + label (optional, String, `Order No : 1234`) ... An optional label to attach to this address. It is recommended this is a human readable string.
+
++ Response 200 (application/json)
+
+        {
+            "address": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy",
+            "label": "Order No : 1234"
+        }
+
+### POST
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        second_password=ThisIsMyOptionalSecondPassword123!&
+        label=Order No : 1234
+
++ Response 200 (application/json)
+
+        {
+            "address": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy",
+            "label": "Order No : 1234"
+        }
+
+
+## Archiving an Address [/merchant/{guid}/archive_address{?password,second_password,address}]
+To improve wallet performance, addresses which have not been used recently should be moved to an archived state. They will still be held in the wallet, but will no longer be included in the "list addresses" API call. 
+
+### GET
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + second_password (optional, String, `ThisIsMyOptionalSecondPassword123!`) ... Secondary password if double-encryption is enabled, must be URL encoded
+    + address (required, String, `18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy`) ... The bitcoin address to archive
+
++ Response 200 (application/json)
+
+        {
+            "archived": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy"
+        }
+
+### POST
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        second_password=ThisIsMyOptionalSecondPassword123!&
+        address=18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy
+
++ Response 200 (application/json)
+
+        {
+            "archived": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy"
+        }
+
+## Unarchive an Address [/merchant/{guid}/unarchive_address{?password,second_password,address}]
+Unarchive an address.
+
+### GET
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded
+    + second_password (optional, String, `ThisIsMyOptionalSecondPassword123!`) ... Secondary password if double-encryption is enabled, must be URL encoded
+    + address (required, String, `18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy`) ... The bitcoin address to archive
+
++ Response 200 (application/json)
+
+        {
+            "active": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy"
+        }
+
+### POST
+
++ Parameters
+    + guid (required, String, `4b8cd8e9-9480-44cc-b7f2-527e98ee3287`) ... Globally unique identifier, can be found in the URL when logging in
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        second_password=ThisIsMyOptionalSecondPassword123!&
+        address=18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy
+
++ Response 200 (application/json)
+
+        {
+            "active": "18fyqiZzndTxdVo7g9ouRogB4uFj86JJiy"
+        }
+
+
+
+# Group Create Wallet
+
+The create_wallet method can be used to create a new blockchain.info bitcoin wallet. It can be created containing a pre-generated private key, or will otherwise generate a new private key.
+
+## Create Wallet Call [/api/v2/create_wallet{?password,api_code,priv,label,email}]
+
+The address returned in a successful response message can be used to deposit funds into the wallet.
+
+It is possible to send payments from the wallet by providing the guid and password to the blockchain wallet api. **In order to access the created wallet with the blockchain wallet api, you must use the same [API code](https://blockchain.info/api/api_create_code) used to create the wallet (in order to bypass the IP address whitelisting).**
+
+Instead, the recommended way to send payments is to provide a private key to the create_wallet method. A copy of this private key can be stored in order to send and receive payments from that specific address in the wallet. You can pass the private key directly to the blockchain wallet api instead of using the identifier and password. 
+
+### GET
+
++ Parameters
+    + password (required, String, `ThisIsMyMainPassword123!`) ... Main password, must be URL encoded.
+    + api_code (required, String, `47a89220-6b15-4a32-84ec-00h011467145`) ... An [API code](https://blockchain.info/api/api_create_code) with the create wallets permission.
+    + priv (optional, String, `5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF`) ... A private key to add to the wallet ([Wallet import format](https://en.bitcoin.it/wiki/Wallet_import_format) preferred)
+    + label (optional, String, `Welcome%20to%20My%20Wallet`) ... A label to set for the first address in the wallet. Alphanumeric only.
+    + email (optional, Email, `me@example.com`) ... An email to associate with the new wallet i.e. the email address of the user you are creating this wallet on behalf of.
+
++ Response 200 (application/json)
+
+        {
+            "guid": "4b8cd8e9-9480-44cc-b7f2-527e98ee3287",
+            "address": "12AaMuRnzw6vW6s2KPRAGeX53meTf8JbZS",
+            "link": "https://blockchain.info/wallet/4b8cd8e9-9480-44cc-b7f2-527e98ee3287"
+        }
+
+### POST
+
++ Request (application/x-www-form-urlencoded)
+
+        password=ThisIsMyMainPassword123!&
+        api_code=47a89220-6b15-4a32-84ec-00h011467145&
+        priv=5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF&
+        label=Welcome%20to%20My%20Wallet&
+        email=me@example.com
+
++ Response 200 (application/json)
+
+        {
+            "guid": "4b8cd8e9-9480-44cc-b7f2-527e98ee3287",
+            "address": "12AaMuRnzw6vW6s2KPRAGeX53meTf8JbZS",
+            "link": "https://blockchain.info/wallet/4b8cd8e9-9480-44cc-b7f2-527e98ee3287"
+        }
+
+# Group JSON RPC API
+
+My Wallet users can interact with their wallet using our JSON RPC api. It is intended to be fully compatible with the original Bitcoind RPC protocol, however some method calls are not supported. 
+
+**In order to use this API, access must be explicitly enabled, and all client ip addresses whitelisted by the wallet owner. Manage access in [Account Settings] -> [IP Restrictions]. Wallets created via the Create Wallet API can bypass this by including the same API key used to create the wallet, in all requests.**
+
+Original documentation available [here](https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_Calls_list).
+
+## Authentication
+1. **-rpcuser** Should be set to your wallet identifier. This is a 36 character random string which can be found on your wallet login page. 
+
+2. **-rpcpassword** Should be set to your main wallet password. If double encryption is enabled, your second password will need to be set using the **-walletpassphrase** method.
+
+3. **-rpcport** Should be set to **443** for https:// (when the -rpcssl is provided) or **80** for plain text http://
+
+## Security
+
+This api is currently incompatible with two factor authentication, and it must therefore be disabled. We **HIGHLY** recommend you enable double encryption, which can be found on the My Wallet account details page.
+
+Unlike when using the javascript wallet, transaction signing is conducted server side which means your private keys are shared with the server. However, many operations (such as fetching a balance and viewing transactions) are possible without needing to decrypt the private keys. This is possible through the use of double encryption: only when the second password is provided, does the server have ability to access the funds in a wallet. For merchants who need to only receive transactions, it maybe possible to never provide a second password.
+
+If transactions can be delayed and are able to be manually reviewed, we highly recommend you do this. Have your server construct a list of transactions which need to be made, and every so often an admin can login and review the list - if the transactions look valid, they can manually supply the second password with a short timeout (don't store the second password on your server if possible). When the admin provides a second password, you can start a job to call sendmany. 
+
+## Notes
+
+* An account is analogous for a label
+
+* A label and bitcoin address are interchangeable, i.e. any command which you can supply a bitcoin address, you can substitute a label and vice versa.
+
+* Any parameters with default value (e.g. minConfirmations = 1) are optional
+
+* **HTTP callbacks can be enabled in the notification section of [Account Settings] in the web interface**
+
+* Ignore the **String_, Int_,** and **Boolean_** when implementing, this is just to help you understand the data-type. 
+
+## Wrapper Libraries
+* [Python](https://github.com/jgarzik/python-bitcoinrpc)
+* [Ruby](https://github.com/jjeffus/rpcjson)
+* [PHP](https://github.com/mikegogulski/bitcoin-php)
+* [Node js](https://github.com/jb55/node-bitcoin)
+* [.Net](http://sourceforge.net/projects/bitnet/)
+* For more information [consult the bitcoin wiki](https://en.bitcoin.it/wiki/API_reference_%28JSON-RPC%29).
+
+## Bitcoind Commands Not Available
+* **-getwork -setgenerate -getmininginfo -getmemorypool** Not intended for bitcoin mining
+* **-help** Read this instead
+* **-keypoolrefill** blockchain.info wallets have no keypool
+* **-stop** You can't stop us
+* **-walletpassphrasechange** Disabled for security reasons
+* **-dumpprivkey** Disabled for security reasons
+* **-encryptwallet** All blockchain.info wallets are encrypted by default
+
+## Host
+The rpc host is **rpc.blockchain.info**. Plain http and SSL https are supported.
+
+## Connecting using [Bitcoind](https://github.com/bitcoin/bitcoin)
+Bitcoind can be used as an RPC client for testing and debugging
+
+```
+$ ./bitcoin-cli -rpcconnect=rpc.blockchain.info -rpcport=443 -rpcssl -rpcuser=YourWalletIdentifier -rpcpassword=YourPassword getinfo
+```
+
+## Methods 
+
+### getinfo
+* **Parameters:** None
+* **Description:** Returns an object cointaining various state info.
+* **Returns:** JSON Object
+
+```
+{
+    "balance" : 43.50100000,
+    "errors" : "",
+    "paytxfee" : 0.005,
+    "proxy" : "",
+    "connected" : 0,
+    "testnet" : false,
+    "difficulty" : 1733207.51384839,
+    "blocks" : 179602
+}
+```
+
+### backupwallet
+* **Parameters:** None
+* **Description:** Uploads the wallet to Google Drive, Dropbox or Email. Must login through the web interface first.
+* **Returns:** Boolean
+
+### walletlock
+* **Parameters:** None
+* **Description:** Remove second password from memory.
+* **Returns:** Boolean
+
+### settxfee
+* **Parameters:** (Double_amount)
+* **Description:** Sets the default transaction fee for 24 hours (must be called every 24 hours).
+* **Returns:** Boolean
+
+### walletpassphrase
+* **Parameters:** (String_password, Int_timeout)
+* **Description:** Stores the wallet second password in cache for timeout in seconds. Only requred for double encrypted wallets.
+* **Returns:** Boolean
+
+### setaccount
+* **Parameters:** (String_bitcoinAddress, String_label)
+* **Description:** Set the label for a bitcoin address.
+* **Returns:** Boolean
+
+### getaccount
+* **Parameters:** (String_bitcoinAddress)
+* **Description:** Get the label for a bitcoin address.
+* **Returns:** String
+
+### getaccountaddress
+* **Parameters:** (String_label)
+* **Description:** Get the first bitcoin address matching label.
+* **Returns:** String
+
+### getaddressesbyaccount
+* **Parameters:** (String_label)
+* **Description:** Get the an array of bitcoin addresses matching label.
+* **Returns:** JSON Array
+
+### getbalance
+* **Parameters:** (String_account = null, Int_minimumConfirmations = 1)
+* **Description:** If [account] is not specified, returns the server's total available balance. If [account] is specified, returns the balance in the account.
+* **Returns:** JSON Array
+
+### getblock
+* **Parameters:** (String_blockHash)
+* **Description:** Returns information about the given block hash.
+* **Returns:** JSON Object
+
+### getblockcount
+* **Parameters:** None
+* **Description:** Returns the number of blocks in the longest block chain.
+* **Returns:** Int
+
+### getblockhash
+* **Alias:** -getblocknumber
+* **Parameters:** (Int_blockHeight)
+* **Description:** Returns hash of block in best-block-chain at height.
+* **Returns:** String
+
+### getconnectioncount
+* **Parameters:** None
+* **Description:** Returns the number of connections to other nodes.
+* **Returns:** Int
+
+### getdifficulty
+* **Parameters:** None
+* **Description:** Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
+* **Returns:** Double
+
+### getgenerate
+* **Parameters:** None
+* **Description:** Returns true or false whether bitcoind is currently generating hashes.
+* **Returns:** Boolean (false)
+
+### gethashespersec
+* **Parameters:** None
+* **Description:** Returns a recent hashes per second performance measurement while generating.
+* **Returns:** Int (0)
+
+### gettransaction
+* **Parameters:** (String_hash)
+* **Description:** Returns an object about the given transaction hash.
+* **Returns:** JSON Object
+
+### listaccounts
+* **Parameters:** (Int_confirmations = 1)
+* **Description:** Returns Object that has account names as keys, account balances as values.
+* **Returns:** JSON Array
+
+### listreceivedbyaccount
+* **Parameters:** (Int_minConfirmations = 1, Boolean_includeempty = false)
+* **Description:** Returns an array of accounts with the total received and more info.
+* **Returns:** JSON Array
+
+### listreceivedbyaddress
+* **Parameters:** (Int_minConfirmations = 1, Boolean_includeempty = false)
+* **Description:** Returns an array of addresses with the the total received and more info.
+* **Returns:** JSON Array
+
+### listsinceblock
+* **Parameters:** (String_blockHash, Int_minConfirmations = 1)
+* **Description:** Get all transactions in blocks since block [blockhash] (not inclusive), or all transactions if omitted. Max 25 at a time.
+* **Returns:** JSON Object
+
+### listtransactions
+* **Parameters:** (String_account = null, Int_count = 25, Int_offset = 0)
+* **Description:** Returns up to [count] most recent transactions skipping the first [from] transactions for account [account]. If [account] not provided, it will return recent transaction from all accounts.
+* **Returns:** JSON Array
+
+### importprivkey
+* **Parameters:** (String_privateKey)
+* **Description:** Import a private key into your bitcoin wallet. Private key must be in wallet import format (Sipa), beginning with a '5'.
+* **Returns:** Boolean
+* **Second Password Required**
+
+### move
+* **Parameters:** (String_fromAccount, String_toAccount, Long_amount)
+* **Description:** Move funds from one account in your wallet to another (live transaction on the network, not internal).
+* **Returns:** String
+* **Second Password Required**
+
+### sendfrom
+* **Parameters:** (String_fromAccount, String_bitcoinAddress, Long_amount)
+* **Description:** Amount is a real and is rounded to 8 decimal places. Will send the given amount to the given address, ensuring the account has a valid balance using [minconf] confirmations. Returns the transaction ID if successful (not in JSON object).
+* **Returns:** String
+* **Second Password Required**
+
+### sendmany
+* **Parameters:** (String_fromAccount, JSONObject_addressAmountPairs)
+* **Address Amount Pairs:** {address:amount,...} e.g. {"1yeTWjh876opYp6R5VRj8rzkLFPE4dP3Uw":10,"1yeTWjh876opYp6R5VRj8rzkLFPE4dP3Uw":15}
+* **Description:** Amounts are double-precision floating point numbers.
+* **Returns:** String
+* **Second Password Required**
+
+### sendtoaddress
+* **Parameters:** (String_bitcoinAddress, Long_amount)
+* **Description:** Amount is a real and is rounded to 8 decimal places. Returns the transaction hash if successful.
+* **Returns:** String
+* **Second Password Required**
+
+### validateadress
+* **Parameters:** (String_bitcoinAddress)
+* **Description:** Return information about bitcoinaddress.
+* **Returns:** JSON Object
+* **Second Password Required**
+
+### getnewaddress
+* **Parameters:** (String_label = null)
+* **Description:** Returns a new bitcoin address for receiving payments. If [account] is specified (recommended), it is added to the address book so payments received with the address will be credited to [account].
+* **Returns:** String
+* **Second Password Required**
+
+### signmessage
+* **Parameters:** (String_bitcoinaddress, String_message)
+* **Description:** Returns a Base64 encoded signature used to verify the provided message was signed by the owner of bitcoinaddress.
+* **Returns:** String
+* **Second Password Required**
+
+### verifymessage
+* **Parameters:** (String_bitcoinaddress, String_signature, String_message)
+* **Description:** Verifies the signature and message matches the bitcoin address provided (See signmessage).
+* **Returns:** String
+
+# Group WebSocket
+Our WebSocket API allows developers to receive Real-Time notifications about new transactions and blocks. The [Websocket echo test](http://www.websocket.org/echo.html) can be useful for debugging.
+
+### Connection URL:
+``
+wss://ws.blockchain.info/inv
+``
+### Status Updates
+Regardless of channel subscription you may receive status messages. This should be displayed to the user.
+
+``
+{"op":"status", "msg", "Connected, Subscribed, Welcome etc..."}
+``
+
+Once the socket is open you can subscribe to a channel by sending an "op" message.
+
+### Subscribing to Unconfirmed Transactions
+Subscribe to notifications for all new bitcoin transactions.
+
+``
+{"op":"unconfirmed_sub"}
+``
+
+### Subscribing to new Blocks
+Receive notifications when a new block is found. Note: if the chain splits you will receive more than one notification for a specific block height.
+
+``
+{"op":"blocks_sub"}
+``
+
+### Debugging OPs:
+Responds with the latest block
+
+``
+{"op":"ping_block"}
+``
+
+Responds with the latest transaction. If subscribed to any addresses it will respond with the latest transaction involving those addresses.
+
+``
+{"op":"ping_tx"}
+``
+
+# Group Detailed Bitcoin Data
+With this API package, you can get information regarding blocks, transactions, addresses, charts, and analytics. All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/) i.e. divide by 100000000 to get the amount in BTC
+## Single Block [/rawblock/{block}]
+    
+### GET
+
+Get information regarding a single block in the blockchain.
+
++ Parameters
+
+    + block (required, Hash/Index, `000000000000000010aa40340352cd5a62ad90e3946d3c6115d24105a27046c1`) ... Either hash value of the block on the blockchain, or blockchain.info's shortened index number.
+            
++ Response 200 (application/json)
+
+        {
+        "hash": "000000000000000010aa40340352cd5a62ad90e3946d3c6115d24105a27046c1",
+        "ver": 2,
+        "prev_block": "000000000000000014623ad94873ca2cc3faa7a8704b4e6eb06dd259d2ef3f63",
+        "mrkl_root": "5f780c498b49934f27d54235617ce8b03394225403236987cfda24890f1dc863",
+        "time": 1424704810,
+        "bits": 404196666,
+        "fee": 0,
+        "nonce": 3163225836,
+        "n_tx": 1,
+        "size": 254,
+        "block_index": 792179,
+        "main_chain": true,
+        "height": 344822,
+        "received_time": 1424704810,
+        "relayed_by": "81.95.157.115",
+        "tx": [
+        {
+            "lock_time": 0,
+            "ver": 1,
+            "size": 173,
+            "inputs": [
+                {
+                    "sequence": 4294967295,
+                    "script": "03f64205e4b883e5bda9e7a59ee4bb99e9b1bcfabe6d6dd2e4a4cbcec56c2e03ecb991355c019de41f2f79036bf30cc899729b63c7ce6a1000000000000000032ff6edeb1000004d696e6564206279206c6c6b6b30363535"
+                }
+            ],
+            "time": 1424704810,
+            "tx_index": 78617287,
+            "vin_sz": 1,
+            "hash": "5f780c498b49934f27d54235617ce8b03394225403236987cfda24890f1dc863",
+            "vout_sz": 1,
+            "relayed_by": "81.95.157.115",
+            "out": [
+                {
+                    "addr_tag_link": "https://www.f2pool.com",
+                    "addr_tag": "Discus Fish (F2Pool)",
+                    "spent": false,
+                    "tx_index": 78617287,
+                    "type": 0,
+                    "addr": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY",
+                    "value": 2500000000,
+                    "n": 0,
+                    "script": "76a914c825a1ecf2a6830c4401620c3a16f1995057c2ab88ac"
+                }
+            ]
+        }
+        ]
+        }
+
+## Block Height [/block-height/{block_height}?format=json]
+    
+### GET
+
+Get an array of blocks at the specified height. Useful for checking for [orphaned blocks.](https://blockchain.info/orphaned-blocks) 
+
++ Parameters
+    + block_height (required, number, `344822`) ... Block Height
+
++ Response 200 (application/json)
+    
+        {
+        "blocks": [
+        {
+            "hash": "000000000000000010aa40340352cd5a62ad90e3946d3c6115d24105a27046c1",
+            "ver": 2,
+            "prev_block": "000000000000000014623ad94873ca2cc3faa7a8704b4e6eb06dd259d2ef3f63",
+            "mrkl_root": "5f780c498b49934f27d54235617ce8b03394225403236987cfda24890f1dc863",
+            "time": 1424704810,
+            "bits": 404196666,
+            "fee": 0,
+            "nonce": 3163225836,
+            "n_tx": 1,
+            "size": 254,
+            "block_index": 792179,
+            "main_chain": true,
+            "height": 344822,
+            "tx": [
+                {
+                    "lock_time": 0,
+                    "ver": 1,
+                    "size": 173,
+                    "inputs": [
+                        {
+                            "sequence": 4294967295,
+                            "script": "03f64205e4b883e5bda9e7a59ee4bb99e9b1bcfabe6d6dd2e4a4cbcec56c2e03ecb991355c019de41f2f79036bf30cc899729b63c7ce6a1000000000000000032ff6edeb1000004d696e6564206279206c6c6b6b30363535"
+                        }
+                    ],
+                    "time": 1424704810,
+                    "tx_index": 78617287,
+                    "vin_sz": 1,
+                    "hash": "5f780c498b49934f27d54235617ce8b03394225403236987cfda24890f1dc863",
+                    "vout_sz": 1,
+                    "relayed_by": "81.95.157.115",
+                    "out": [
+                        {
+                            "addr_tag_link": "https://www.f2pool.com",
+                            "addr_tag": "Discus Fish (F2Pool)",
+                            "spent": false,
+                            "tx_index": 78617287,
+                            "type": 0,
+                            "addr": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY",
+                            "value": 2500000000,
+                            "n": 0,
+                            "script": "76a914c825a1ecf2a6830c4401620c3a16f1995057c2ab88ac"
+                        }
+                    ]
+                }
+            ]
+        }
+        ]
+        }
+  
+## Latest Block [/latestblock]
+    
+### GET
+
+Get a JSON message with block info and transaction indexes of the latest block.
+
++ Response 200 (application/json)
+    
+        {
+        "hash":"0000000000000538200a48202ca6340e983646ca088c7618ae82d68e0c76ef5a",
+        "time":1325794737,
+        "block_index":841841,
+        "height":160778,
+        "txIndexes":[13950369,13950510,13951472]
+        }
+        
+## Blocks in a specific day  [/blocks/{time_in_milliseconds}?format=json]
+
+### GET
+
+Get a response with all the blocks mined on a specific day (including orphaned blocks). You can use [this converter](www.TimestampConvert.com) to get the time in miliseconds.
+
++ Parameters
+
+    + time_in_milliseconds (required, Integer, `1424347200000`) ... Timestamp in miliseconds, any time of the day you want
+
++ Response 200 (application/json)
+    
+        {
+        "blocks" : [
+        {
+            "height" : 344120, 
+            "hash" : "00000000000000000ae9d5af790d95d0e112fb70fd1e82fe125d66c1d67b9362",
+            "time" : 1424304565,
+            "main_chain" : true
+        },
+        {
+            "height" : 344121, 
+            "hash" : "0000000000000000008b9debd883ddeaa0ac9674acde09cd1532398e30f4ed7a",
+            "time" : 1424305378,
+            "main_chain" : true
+        }
+        ]
+        }
+
+## Blocks for a specific pool  [/blocks/{pool_name}?format=json]
+
+### GET
+Get a response with latest blocks mined by a specific pool. You can use [this graph](https://blockchain.info/pools) to see the most recent pools. You can also use [this page](https://github.com/blockchain/Blockchain-Known-Pools) to see our entire pool directory (and suggest new pools).
+
++ Parameters
+    + pool_name (required, String/IP address, `AntPool`) ... IP address or pool name **case sensitive**.
+
++ Response 200 (application/json)
+
+        {
+          "blocks" : [ 
+            {
+              "height" : 166107, 
+              "hash" : "00000000000003823fa3667d833a354a437bdecf725f1358b17f949c991bfe0a",
+              "time" : 1328830483
+            },
+            {
+                "height" : 166104, 
+                "hash" : "00000000000008a34f292bfe3098b6eb40d9fd40db65d29dc0ee6fe5fa7d7995",
+                "time" : 1328828041
+            }]
+        }
+        
+## Single Transaction [/rawtx/{hash_or_index}?format={format}]
+
++ Parameters
+    + hash_or_index (required, String/Integer, `b6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da`) ... Either hash value of the transaction on the blockchain, or blockchain.info's shortened index number.
+    + format = `json` (optional, string) ... What format would you like the response.
+
+        + Values
+            + `json`
+            + `hex`
+
+### Transaction Info  [GET]
+Returns information regarding a specific transaction.
+
++ Response 200 (application/json)
+
+        {
+            "hash":"b6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da",
+            "ver":1,
+            "vin_sz":1,
+            "vout_sz":2,
+            "lock_time":"Unavailable",
+            "size":258,
+            "relayed_by":"64.179.201.80",
+            "block_height": 12200,
+            "tx_index":"12563028",
+            "inputs":[
+
+
+        {
+                "prev_out":{
+                "hash":"a3e2bcc9a5f776112497a32b05f4b9e5b2405ed9",
+                "value":"100000000",
+                "tx_index":"12554260",
+                "n":"2"
+                },
+            "script":"76a914641ad5051edd97029a003fe9efb29359fcee409d88ac"
+            }
+
+        ],
+        "out":[
+
+        {
+                    "value":"98000000",
+                    "hash":"29d6a3540acfa0a950bef2bfdc75cd51c24390fd",
+                    "script":"76a914641ad5051edd97029a003fe9efb29359fcee409d88ac"
+                },
+
+                {
+                    "value":"2000000",
+                    "hash":"17b5038a413f5c5ee288caa64cfab35a0c01914e",
+                    "script":"76a914641ad5051edd97029a003fe9efb29359fcee409d88ac"
+                }
+
+        ]
+        }
+
+## Unconfirmed Transactions  [/unconfirmed-transactions?format=json]
+
+### GET
+Get an array of transactions that are unconfirmed in the bitcoin network.
+
++ Response 200 (application/json)
+
+        {
+        "txs": [
+        {
+            "lock_time": 0,
+            "ver": 1,
+            "size": 372,
+            "inputs": [
+                {
+                    "sequence": 4294967295,
+                    "prev_out": {
+                        "spent": true,
+                        "tx_index": 78636642,
+                        "type": 0,
+                        "addr": "1Dihat9Fy1ZDzFCq33LN5M7kzG3Fmi3FbZ",
+                        "value": 61140,
+                        "n": 1,
+                        "script": "76a9148b84711990f82d3cd70013e738787506a2156ebf88ac"
+                    },
+                    "script": "47304402203409c3381b75deac615630125c62af73e959e4e42431397209d0298da272c4b4022011720c0e8ecc8a4d01e1f6210891fe5e65f581473c05f0b15bc38010ca5155610121038b1c61898ba817c0361fb910c001cddf309388f6e156f96de749fdbb1c531f34"
+                },
+                {
+                    "sequence": 4294967295,
+                    "prev_out": {
+                        "spent": true,
+                        "tx_index": 78634898,
+                        "type": 0,
+                        "addr": "1Dihat9Fy1ZDzFCq33LN5M7kzG3Fmi3FbZ",
+                        "value": 379950,
+                        "n": 1,
+                        "script": "76a9148b84711990f82d3cd70013e738787506a2156ebf88ac"
+                    },
+                    "script": "473044022051029de181886a8225e78ea8c97fcdff4fdf65bd5479cf4370a8bf38ffd8770002202e788bb00aa4b017249eeefdfcf49cc2e591a7dbb25a1b2a3df924505b7683a50121038b1c61898ba817c0361fb910c001cddf309388f6e156f96de749fdbb1c531f34"
+                }
+            ],
+            "double_spend": false,
+            "time": 1424718521,
+            "tx_index": 78637260,
+            "vin_sz": 2,
+            "hash": "011931da4d5ef3afde1b043f285b27cec2883b9d77feda71fe67b13341778494",
+            "vout_sz": 2,
+            "relayed_by": "127.0.0.1",
+            "out": [
+                {
+                    "addr_tag_link": "http://luckyb.it/",
+                    "addr_tag": "LuckyBit blue",
+                    "spent": false,
+                    "tx_index": 78637260,
+                    "type": 0,
+                    "addr": "1LuckyB5VGzdZLZSBZvw8DR17iiFCpST7L",
+                    "value": 356450,
+                    "n": 0,
+                    "script": "76a914da5dde86d69a5d9dad88763f2df4b048953c7d0488ac"
+                },
+                {
+                    "spent": false,
+                    "tx_index": 78637260,
+                    "type": 0,
+                    "addr": "1Dihat9Fy1ZDzFCq33LN5M7kzG3Fmi3FbZ",
+                    "value": 74640,
+                    "n": 1,
+                    "script": "76a9148b84711990f82d3cd70013e738787506a2156ebf88ac"
+                }
+            ]
+        }
+        ]
+        }
+        
+## Inventory Data  [/inv/{hash}?format=json]
+
++ Parameters
+     + hash (required, String, `acbfff62093b5d682b29f0e5d1539e135cbd3d3c902b117b4785dda12b29e1e5`) ... Hash value of bitcoin transaction.
+
+
+### GET
+Get JSON regarding the time and network propagation of a transaction
+
++ Response 200 (application/json)
+
+        {
+        "hash" : "acbfff62093b5d682b29f0e5d1539e135cbd3d3c902b117b4785dda12b29e1e5",
+        "type" : "",
+        "initial_time" : "1424719629864",
+        "last_time" : "1424719290757",
+        "initial_ip" : "178.79.179.49", 
+        "nconnected" : "1652",
+        "relayed_count" : "1399",
+        "relayed_percent" : "85"
+        }
+
+## Single Address [/address/{bitcoin_address}?format=json&limit={number}&offset={number}]
+
+### GET
+Get information regarding a single address in the blockchain.
+
++ Parameters
+    + bitcoin_address (required, String, `1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3`) ... Either bitcoin address or hash160
+    + limit (optional, Integer, `&limit=50 (Max 50)`) ... Optional limit parameter to show n transactions
+    + offset (optional, Integer, `&offset=100 (Page 2 for limit 50)`) ... Optional offset parameter to skip the first n transactions
+    
++ Response 200 (application/json)
+
+        {
+        "hash160":"8fe03f8280ef35dec0746ab8932c7c1e26d62a3c",
+        "address":"1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3",
+        "n_tx":2,
+        "total_received":1000000000,
+        "total_sent":1000000000,
+        "final_balance":0,
+        "txs":[{
+        "ver":1,
+           "inputs":[
+              {
+                 "sequence":4294967295,
+                 "prev_out":{
+                    "spent":true,
+                    "tx_index":78311605,
+                    "type":0,
+                    "addr":"1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3",
+                    "value":1000000000,
+                    "n":0,
+                    "script":"76a9148fe03f8280ef35dec0746ab8932c7c1e26d62a3c88ac"
+                 },
+                 "script":"47304402207b149fe52225453b16e87ff82f517357c5ac450d734c10e50207aeded99dc28702202d013e0a00660f0748ca9e02b3c90b807b58468b9360253e893c2d5cd5165aaa012103950257d9ab1e7fc5aef7de9025868d38009506f4f0119de2c57157545106313c"
+              }
+           ],
+           "block_height":344361,
+           "relayed_by":"176.9.31.178",
+           "out":[
+              {
+                 "spent":true,
+                 "tx_index":78312763,
+                 "type":0,
+                 "addr":"1EA6S6snYAjdcPdbP3Wasc1gx6U3gQV11U",
+                 "value":14000000,
+                 "n":0,
+                 "script":"76a9149051e9f5836e477710cd116ffb3910ed8d736bfa88ac"
+              },
+              {
+                 "spent":false,
+                 "tx_index":78312763,
+                 "type":0,
+                 "addr":"1N2F7iwYg16JKaHmRfDvAmCkmuqxkvbX3X",
+                 "value":38530000,
+                 "n":1,
+                 "script":"76a914e696d73e49074b2c295a65fac22ac2fcbae32bb588ac"
+              },
+              {
+                 "spent":true,
+                 "tx_index":78312763,
+                 "type":0,
+                 "addr":"1q41dsUVp7ptxpfBCgy2hwkHuHuGPxKZF",
+                 "value":838823667,
+                 "n":2,
+                 "script":"76a91409167ac656da406036fe68dd64584214074b67ce88ac"
+              },
+              {
+                 "spent":true,
+                 "tx_index":78312763,
+                 "type":0,
+                 "addr":"1Aiy9rxBzsW1KpjTnacKeBRanVgazF47pQ",
+                 "value":108636333,
+                 "n":3,
+                 "script":"76a9146aa90f7acb82fa37735bd1ecbd547fa700799bc788ac"
+              }
+           ],
+           "lock_time":0,
+           "result":0,
+           "size":293,
+           "time":1424426275,
+           "tx_index":78312763,
+           "vin_sz":1,
+           "hash":"6eb6aab67eabe0fad82839663ae1fa15f92b46780ac09398fdfa02fb3c2a5256",
+           "vout_sz":4
+        }]
+        }
+        
+        
+## Multiple Addresses [/multiaddr?active={bitcoin_address1}|{bitcoin_address2}|{etc}]
+
+### GET
+Get information regarding multiple addresses in the blockchain. Multiple addresses divided by a pipe |
+
++ Parameters
+    + bitcoin_address1 (required, String, `1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F`) ... Bitcoin Address
+    + bitcoin_address2 (optional, String, `1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3`) ... Second Bitcoin Address
+    + etc (optional, String, `1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F`) ... As many other addresses as required
+    
++ Response 200 (application/json)
+
+        {
+        "recommend_include_fee": true,
+        "sharedcoin_endpoint": "https://api.sharedcoin.com",
+        "info": {
+            "conversion": 100000000,
+            "nconnected": 1658,
+            "symbol_local": {
+                "symbol": "$",
+                "code": "USD",
+                "symbolAppearsAfter": false,
+                "name": "U.S. dollar",
+                "local": true,
+                "conversion": 422101.21987253
+            },
+            "symbol_btc": {
+                "symbol": "BTC",
+                "code": "BTC",
+                "symbolAppearsAfter": true,
+                "name": "Bitcoin",
+                "local": false,
+                "conversion": 100000000
+            },
+            "latest_block": {
+                "height": 344845,
+                "block_index": 794212,
+                "hash": "000000000000000011379707b9008f6a8b4ebb67d18b852ccb1313f55eb57aa6",
+                "time": 1424720106
+            }
+        },
+        "wallet": {
+            "n_tx": 88,
+            "n_tx_filtered": 88,
+            "total_received": 12616871770,
+            "total_sent": 12616871770,
+            "final_balance": 0
+        },
+        "addresses": [
+            {
+                "address": "1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3",
+                "n_tx": 2,
+                "total_received": 1000000000,
+                "total_sent": 1000000000,
+                "final_balance": 0
+            },
+            {
+                "address": "1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F",
+                "n_tx": 86,
+                "total_received": 11616871770,
+                "total_sent": 11616871770,
+                "final_balance": 0
+            }
+        ],
+        "txs": [
+            {
+                "Transaction": "List"
+            }
+        ]
+        }
+
+## Unspent Outputs [/unspent?active={bitcoin_address}]
+
+### GET
+Get information regarding a single address's unspent outputs in the blockchain.
+
++ Parameters
+    + bitcoin_address (required, String, `1JYAYVpjWnmiEk6Mh4Ff2YErCCKMiTkn6e`) ... String
+
++ Response 200 (application/json)
+
+        {
+        "unspent_outputs":[
+
+        {
+        "tx_hash":"3f9becae63656c860440abd97fd09590e0ba8f7534dc9c8e0ed07e52d47e317a",
+        "tx_hash_big_endian":"7a317ed4527ed00e8e9cdc34758fbae09095d07fd9ab4004866c6563aeec9b3f",
+        "tx_index":150497,
+        "tx_output_n": 0,
+        "script":"41040a2c3a18912273478dc624be91ede02a6fec4e241a47b8a95e9e9b141a02044ef96921f4c8bd09fed3e53d551d7e9a69c33d04ae4475d6e86d1a208f11961e83ac",
+        "value": 5000000000,
+        "value_hex": "012a05f200",
+        "confirmations":259691
+        }
+        
+        ]
+        }
+
+
+## Chart Data [/charts/{chart_type}?format={format}]
+
+### GET
+Get information in JSON format from any chart on our [charts page](https://blockchain.info/charts). Some 'X' values are in [UNIX timestamp](http://www.epochconverter.com/).
+
++ Parameters
+    + chart_type (required, String, `total-bitcoins`) ... Enter the name of the chart. Go to [charts page](https://blockchain.info/charts) and look at URL for reference name.
+    + format (required, string, `json`) ... What format would you like the response.
+
+        + Values
+            + `json`
+            + `csv`
+
++ Response 200 (application/json)
+
+        {
+            "values" : [
+            { 
+                "x" : 1290602498,
+                "y" : 1309696.2116000003
+            }]
+        }
+        
+## Stats [/stats?format=json]
+
+### GET
+Get [statistics](https://blockchain.info/stats) regarding the bitcoin blockchain.
+
++ Response 200 (application/json)
+
+        {
+            "market_price_usd": 237.06,
+            "hash_rate": 315614239.051502,
+            "total_fees_btc": 1398723415,
+            "n_btc_mined": 340000000000,
+            "n_tx": 97984,
+            "n_blocks_mined": 136,
+            "minutes_between_blocks": 10.588235294117647,
+            "totalbc": 1387097500000000,
+            "n_blocks_total": 344844,
+            "trade_volume_usd": 1259511.043680693,
+            "estimated_transaction_volume_usd": 35819963.26336048,
+            "blocks_size": 59425311,
+            "miners_revenue_usd": 809085.78,
+            "nextretarget": 346751,
+            "difficulty": 46684376316.86029,
+            "trade_volume_btc": 5313.04751405,
+            "estimated_btc_sent": 15110083212419,
+            "miners_revenue_btc": 3413,
+            "total_btc_sent": 76179950638404,
+            "timestamp": 1424719755137
+        }
+
+# Group Receive Payments API
+
+## Introduction
+The blockchain receive payments API is the quickest and easiest way to **begin accepting automated bitcoin payments**. Consisting of just a simple http GET request, you can be up and running in minutes with **no account or approval needed**. 
+
+One of the difficulties involved with receiving bitcoin payments is the need to **generate a unique address for each new user or invoice**. These addresses need to monitored and stored securely. The blockchain receive payments API takes care of the generation and monitoring of addresses. We will **notify your server using a simple callback** whenever a payment is received. 
+
+## Obtaining a Bitcoin Address
+The receive payment API requires that you have at least one bitcoin address in which all payments will be forwarded to. For example, a [Cold Storage](https://en.bitcoin.it/wiki/Cold_storage) address, or an address from a **free [My Wallet](https://blockchain.info/wallet/new) account**. 
+
+## Implementing the Callback
+When a payment is received, blockchain.info will notify the callback URL you specify. Please note, the callback url is limited to 255 characters in length. 
+
+**Example Callback:**
+```
+https://mystore.com/?input_transaction_hash=f7ceec343b9243616e7a8c38474a264528a9acdf947417768e1aa90593a4b58d&shared=false&address=1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq&destination_address=1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq&input_address=37cHN7tXJ12yLK6xF8P57KbU6yr5B7PhaU&test=true&invoice_id=058921123&anonymous=false&secret=ZzsMLGKe162CfA5EcG6j&confirmations=0&value=90000&transaction_hash=f7ceec343b9243616e7a8c38474a264528a9acdf947417768e1aa90593a4b58d
+```
+
+**Parameters**
+* **input_transaction_hash** - The original paying transaction hash before forwarding.
+* **destination_address** - The destination bitcoin address. Check this matches your address.
+* **input_address** - The bitcoin address that received the transaction (that will forward).
+* **test** - Can be set to **true** for your testing, but will be **false** for production use. 
+* **confirmations** - The number of confirmations of this transaction.
+* **value** - The value of the payment received (in satoshi, so divide by 100,000,000 to get the value in BTC).
+* **transaction_hash** - The transaction hash.
+* **{custom parameters}** - Any parameters included in the callback URL, will be passed back to the callback URL in the notification ( **invoice_id** and **secret** in the above example). 
+
+## Expected Server Response
+In order to acknowledge successful processing of the callback, your server should respond with the text "*ok*" (no quotes), **in COMPLETE plain-text, no html**. If the server responds with **anything else,** or nothing, the callback will be resent again every new block (approximately every 10 minutes) up to 1000 times (1 week). Callback domains which appear dead or never return the "*ok*" response may be blocked from the service. If the transaction to the input address *doesn’t include the correct fees or has propagated poorly* it won’t be forwarded until it confirms (*so it misses the 0 confirmation callback*).
+
+## Security
+A custom secret parameter should be included in the callback URL. The secret will be passed back to the callback script when the callback is fired, and should be checked by your code for validity. This prevents someone from trying to call your servers and falsely mark an invoice as 'paid'.
+
+## Currency Conversion
+Use our Exchange Rates API to convert values in local currencies to BTC.
+
+## Double Spends & Chargebacks
+A [double spend](https://en.bitcoin.it/wiki/Double-spending) occurs when a malicious user spends the same BTC twice. A payment that initially appears successful, could be reversed within a very small window of time. This is counteracted by waiting for the transaction to be included in the blockchain, and reaching a number of confirmations. 4 confirmations is generally considered safe for high value transactions.
+
+Validate the transaction confirmations in the callback script by checking **confirmations** parameter. It is recommended you **acknowledge the transaction at zero confirmations**, but only **trust the transaction after one confirmation**. For example, if purchasing a product, we would show the order as successful at zero confirmations (the first callback, but do not echo "*ok*" yet), but only ship the product when 4 or more confirmations are reached (so on the 4th callback, echo "*ok*").
+
+
+
+## Generating a Receiving Address [/api/receive?method=create&address={receiving_address}&callback={callback_url}]
+This method creates a unique address which should be presented to the customer. Any payments sent to this address, will be forwarded to your own bitcoin address. Each time a payment is forwarded the callback URL will be called. Please note, these generated addresses will **never expire**. 
+
+**The minimum supported transaction size is 0.0005 BTC**. Forwarding transactions will include a network fee paid by blockchain.info. 
+
+### GET
++ Parameters
+    + receiving_address (required, String, `1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq`) ... Your Receiving Bitcoin Address (Where you would like the payment to be sent)
+    + callback_url (required, URL, `https://mystore.com?invoice_id=058921123&secret=ZzsMLGKe162CfA5EcG6j`) ... The callback URL to be notified when a payment is received. **Remember to [URL Encode](http://meyerweb.com/eric/tools/dencoder/) the callback url** when calling the create method. 
+
++ Response 200
+
+        {
+            "fee_percent":0,
+            "destination":"1A8JiWcwvpY7tAopUkSnGuEYHmzGYfZPiq",
+            "input_address":"1KZoUuPWFAeyVySHAGqvTUDoX6P3ntuLNF",
+            "callback_url":"https://mystore.com?invoice_id=058921123&secret=ZzsMLGKe162CfA5EcG6j"
+        }
+
+# Group Tools
+
+### Address to QR 
+Converts a bitcoin address to a QR code. 
+```
+https://www.blockchain.info/qr?data={btc_address}&size={px_size}
+```
+
+![QR Code](https://blockchain.info/qr?data=1BCKevinKpcqo667K5iaXu9RpZz1sNPJ8a&size=150)
+
+
+# Group Advanced Tools
+
+## Broadcast TX [/pushtx]
+Push a raw transaction in hex format (i.e. characters 0-9, a-f) and broadcast it over the bitcoin network. The method does not return anything upon success, but will raise exceptions if the transaction is malformed. You can use [this page](https://blockchain.info/decode-tx) to decode a hex formatted transaction into human readable text.
+
+### POST
+
++ Request (application/x-www-form-urlencoded)
+
+        0100000001fd468e431cf5797b108e4d22724e1e055b3ecec59af4ef17b063afd36d3c5cf6010000008c4930460221009918eee8be186035be8ca573b7a4ef7bc672c59430785e5390cc375329a2099702210085b86387e3e15d68c847a1bdf786ed0fdbc87ab3b7c224f3c5490ac19ff4e756014104fe2cfcf0733e559cbf28d7b1489a673c0d7d6de8470d7ff3b272e7221afb051b777b5f879dd6a8908f459f950650319f0e83a5cf1d7c1dfadf6458f09a84ba80ffffffff01185d2033000000001976a9144be9a6a5f6fb75765145d9c54f1a4929e407d2ec88ac00000000
+        
++ Response 200
+
+## Address to Hash [/q/addresstohash/{address}]
+
+### GET
+Converts a bitcoin address to a hash 160
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Regular bitcoin address
+
++ Response 200 (text/plain)
+
+        998f169318eb1d8d2a4e53dce2712f5678c6f06e
+
+## Hash to Address [/q/hashtoaddress/{hash_160}]
+
+### GET
+Converts a hash 160 to a bitcoin address
+
++ Parameters
+    + hash_160 (required, String, `998f169318eb1d8d2a4e53dce2712f5678c6f06e`) ... Hash 160
+
++ Response 200 (text/plain)
+
+        1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj
+
+## Pub to Hash [/q/hashpubkey/{PubKey}]
+
+### GET
+Converts a public key to a hash 160 
+
++ Parameters
+    + PubKey (required, String, `0450863AD64A87AE8A2FE83C1AF1A8403CB53F53E486D8511DAD8A04887E5B23522CD470243453A299FA9E77237716103ABC11A1DF38855ED6F2EE187E9C582BA6`) ... [Public key](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+
++ Response 200 (text/plain)
+
+        010966776006953d5567439e5e39f86a0d273bee
+
+## Pub to Address [/q/addrpubkey/{PubKey}]
+
+### GET
+Converts a public key to an address 
+
++ Parameters
+    + PubKey (required, String, `0450863AD64A87AE8A2FE83C1AF1A8403CB53F53E486D8511DAD8A04887E5B23522CD470243453A299FA9E77237716103ABC11A1DF38855ED6F2EE187E9C582BA6`) ... [Public key](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+
++ Response 200 (text/plain)
+
+        16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM
+
+## Address to pub [/q/pubkeyaddr/{address}]
+
+### GET
+Converts an address to public key (if available)
+
++ Parameters
+    + address (required, String, `1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj`) ... Regular bitcoin address
+
++ Response 200 (text/plain)
+
+        04dee964a0f7ee2701e85be140abc1fe9b027b8ddaa8fd754f39d9d9b6528085dd42ad2af3cba24035ea0aa67411456720fd954f7c0d279329024e8b190c5c6f75
+
+## Hash to nTxID [/q/hashtontxid/{TxHash}]
+
+### GET
+Convert a transaction hash to nTxID. A Normalized Transaction Hash is a hash of the serialized transaction with it's input scripts blank. This hash cannot be altered through [transaction malleability](https://en.bitcoin.it/wiki/Transaction_Malleability)
+
++ Parameters
+    + TxHash (required, String, `1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5`) ... Regular transaction hash
+
++ Response 200 (text/plain)
+
+        3467a2e4bba5ee69bb5376f90a1fba050da02319bfb7e6ef2c9466d9b75a7175
+
+## nTxID to Hash [/q/ntxidtohash/{nTxID}]
+
+### GET
+Convert an nTxID to transaction hash. A Normalized Transaction Hash is a hash of the serialized transaction with it's input scripts blank. This hash cannot be altered through [transaction malleability](https://en.bitcoin.it/wiki/Transaction_Malleability)
+
++ Parameters
+    + nTxID (required, String, `3467a2e4bba5ee69bb5376f90a1fba050da02319bfb7e6ef2c9466d9b75a7175`) ... Regular transaction hash
+
++ Response 200 (text/plain)
+
+        1575059873e0ec2359f6aa6e0e5cbb5baca642117286e4a3bf70d4a37f89daf5
+        
+# Group Support
+
+If you are having trouble implementing / working with our APIs, please feel free to search and post on [StackOverflow](http://stackoverflow.com/questions/tagged/blockchain) - **make sure to include the 'blockchain' tag**.
