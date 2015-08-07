@@ -1473,12 +1473,12 @@ Get information regarding a single address in the blockchain.
 ## Multiple Addresses [/multiaddr?active={bitcoin_address1}|{bitcoin_address2}|{etc}]
 
 ### GET
-Get information regarding multiple addresses in the blockchain. Multiple addresses divided by a pipe |
+Get information regarding multiple addresses in the blockchain. Multiple addresses divided by a pipe |. **This also works with [xPubs](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)**
 
 + Parameters
     + bitcoin_address1 (required, String, `1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F`) ... Bitcoin Address
     + bitcoin_address2 (optional, String, `1E7kGTngTPC1P9Rbd9SytVYiscTmzBHQM3`) ... Second Bitcoin Address
-    + etc (optional, String, `1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F`) ... As many other addresses as required
+    + etc (optional, String, `xpub6CntEmf4siU4h4jWJiVr5eEh1okwJUgEqwxu64mZA23fGV2Chpp96A5o7BmAh21YkcJLyRSLVuDV7HEL6Wj2GKNVpKM4xYRyRPQGry6m2hE`) ... As many other addresses as required
 
 + Response 200 (application/json)
 
