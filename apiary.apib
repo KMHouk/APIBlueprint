@@ -1649,7 +1649,7 @@ In order to acknowledge successful processing of the callback, your server shoul
 A custom secret parameter should be included in the callback URL. The secret will be passed back to the callback script when the callback is fired, and should be checked by your code for validity. This prevents someone from trying to call your servers and falsely mark an invoice as 'paid'.
 
 ## Currency Conversion
-Use our Exchange Rates API to convert values in local currencies to BTC.
+Use our Exchange Rates API to translate values in local currencies to BTC.
 
 ## Double Spends & Chargebacks
 A [double spend](https://en.bitcoin.it/wiki/Double-spending) occurs when a malicious user spends the same BTC twice. A payment that initially appears successful, could be reversed within a very small window of time. This is counteracted by waiting for the transaction to be included in the blockchain, and reaching a number of confirmations. 4 confirmations is generally considered safe for high value transactions.
@@ -1661,8 +1661,7 @@ Validate the transaction confirmations in the callback script by checking **conf
 ## Generating a Receiving Address [/v2/receive?xpub={xPub}&callback={callback_url}&key={api_key}]
 This method creates a unique address which should be presented to the customer. For any payments sent to this address, you will be sent an HTTP notification, and the funds will be instantly under your control. Please note that every call to the server will increment the `index` parameter. This is done so you do not show the same address to two different customers. However, all funds will still show within the same account. 
 
-**Warning**: Due to a [Blueprint limitation](https://github.com/apiaryio/api-blueprint/issues/122), the mocking feature won't work for this resource.
-You need to manually change https://blockchain.info/ with https://api.blockchain.info/ in your code.
+**Warning**: You need to manually change https://blockchain.info/ with https://api.blockchain.info/ for the request in your code.
 
 ### GET
 + Parameters
