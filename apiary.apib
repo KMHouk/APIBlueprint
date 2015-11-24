@@ -1102,7 +1102,7 @@ Get information regarding a single block in the blockchain.
 
 ### GET
 
-Get an array of blocks at the specified height. Useful for checking for [orphaned blocks.](https://blockchain.info/orphaned-blocks)
+Get an array of blocks at the specified height. Useful for checking for [orphaned blocks](https://blockchain.info/orphaned-blocks). When queried in JSON format, the orphan status of a block is indicated by the `main_chain` attribute, which is set to `false` when it is an orphaned block.
 
 + Parameters
     + block_height (required, number, `344822`) ... Block Height
