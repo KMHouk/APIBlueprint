@@ -22,7 +22,7 @@ Simple plain text API for querying blockchain data, usually one number. For more
 
 All bitcoin values are in [Satoshi](http://www.btcsatoshi.com/) i.e. divide by 100,000,000 to get the amount in BTC.
 
-## Address Balance [/q/addressbalance/{address}/confirmations={confirmations}]
+## Address Balance [/q/addressbalance/{address}?confirmations={confirmations}]
 
 ### GET
 
@@ -38,7 +38,7 @@ Do not use to process payments without the confirmations parameter.
 
         2000000
 
-## Total Received [/q/getreceivedbyaddress/{address}/confirmations={confirmations}]
+## Total Received [/q/getreceivedbyaddress/{address}?confirmations={confirmations}]
 
 ### GET
 
@@ -54,7 +54,7 @@ Do not use to process payments without the confirmations parameter.
 
         2000000
 
-## Total Sent [/q/getsentbyaddress/{address}/confirmations={confirmations}]
+## Total Sent [/q/getsentbyaddress/{address}?confirmations={confirmations}]
 
 ### GET
 
